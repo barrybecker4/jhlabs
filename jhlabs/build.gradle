@@ -1,0 +1,71 @@
+// Master build file for jhlabs library jar.
+apply plugin: 'java'
+apply plugin: 'project-reports'
+
+configurations.compile.transitive = true
+
+defaultTasks "clean", "build"
+
+// Setup multi-project configuration
+subprojects {
+    usePlugin 'java'
+   
+    // some specifics about what we will build.
+    defaultTasks 'clean', 'build'
+    sourceCompatibility = 1.6
+
+    manifest.mainAttributes(
+        'Implementation-Title': 'jhlab jar project',
+        'Implementation-Version': version
+    )
+
+    task hello << { task->println "Proctect name = $task.project.name"}
+
+    // Repositories where we pull third-party libraries out of the cloud
+    repositories {
+        mavenRepo urls: 'http://repository.jboss.org/maven2/'
+        mavenCentral()
+    }
+
+    dependencies {
+        // standard scopes are: compile, runtime, testCompile, testRuntime
+        compile 'java3d:vecmath:1.3.1'
+        compile 'javax.media:jai-core:1.1.3'
+        compile 'com.sun.media:jai-codec:1.1.3'
+        compile 'commons-codec:commons-codec:1.3'
+        testCompile 'junit:junit:4.7'
+    }
+
+    uploadArchives {
+        repositories {
+           flatDir(dirs: file('dist'))
+        }
+    }
+
+    // all my projects use this directory layout.
+    sourceSets {
+      main {
+          java {
+              srcDir 'source'
+          }
+          resources {
+              srcDir 'source/resources'
+          }
+      }
+      test {
+          java {
+              srcDir 'test'
+          }
+          resources {
+              srcDir 'test/resources'
+          }
+      }
+    }
+    //group = 'org.gradle'
+    //version = '1.0'
+    //manifest.mainAttributes(provider: 'gradle')
+}
+dependsOnChildren()
+
+
+
