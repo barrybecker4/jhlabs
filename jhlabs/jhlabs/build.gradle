@@ -1,0 +1,10 @@
+jar.baseName = 'jhlabs'
+version = '1.0.1'
+
+
+dependencies {
+}
+
+
+
+
