@@ -9,4 +9,4 @@ I gave the jar file a version in the name like jhlab-1.0.1.jar so I know explici
 
 To build, go into the root jhlabs directory and type gradle.
 This will build everything and put the jar file in jhlabs/jhlabs/build/libs/jhlabs-1.0.x.jar
-You can them copy that to the applut libs directory if you need a new version.
+You can then copy that to the applet libs directory if you need a new version.
