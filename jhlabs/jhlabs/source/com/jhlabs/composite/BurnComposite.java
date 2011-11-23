@@ -34,6 +34,7 @@ public final class BurnComposite extends RGBComposite {
             super( alpha, srcColorModel, dstColorModel );
         }
 
+        @Override
         public void composeRGB( int[] src, int[] dst, float alpha ) {
             int w = src.length;
 
