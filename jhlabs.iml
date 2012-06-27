@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="gradle-1.0-milestone-6" level="application" />
+    <orderEntry type="library" name="gradle-1.0" level="project" />
     <javadoc-paths>
       <root url="file://C:/Users/Public/Program Files/gradle-1.0-milestone-6/lib" />
     </javadoc-paths>

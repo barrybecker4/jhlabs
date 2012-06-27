@@ -9,7 +9,7 @@ defaultTasks "clean", "build"
 // Setup multi-project configuration
 subprojects {
     apply plugin: 'java'
-   
+
     // some specifics about what we will build.
     defaultTasks 'clean', 'build'
     sourceCompatibility = 1.6
@@ -23,7 +23,7 @@ subprojects {
 
     // Repositories where we pull third-party libraries out of the cloud
     repositories {
-        mavenRepo urls: 'http://repository.jboss.org/maven2/'
+        mavenRepo url: 'http://repository.jboss.org/maven2/'
         mavenCentral()
     }
 
@@ -65,7 +65,6 @@ subprojects {
     //version = '1.0'
     //manifest.mainAttributes(provider: 'gradle')
 }
-dependsOnChildren()
 
 
 
