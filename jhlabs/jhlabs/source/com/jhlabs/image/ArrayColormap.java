@@ -20,7 +20,7 @@ package com.jhlabs.image;
  * A colormap implemented with an array of colors. This corresponds to the IndexColorModel class.
  */
 public class ArrayColormap implements Colormap, Cloneable {
-	
+
 	/**
 	 * The array of colors.
 	 */
@@ -44,14 +44,14 @@ public class ArrayColormap implements Colormap, Cloneable {
 	public Object clone() {
 		try {
 			ArrayColormap g = (ArrayColormap)super.clone();
-			g.map = (int[])map.clone();
+			g.map = map.clone();
 			return g;
 		}
 		catch (CloneNotSupportedException e) {
 		}
 		return null;
 	}
-	
+
     /**
      * Set the array of colors for the colormap.
      * @param map the colors
@@ -94,7 +94,7 @@ public class ArrayColormap implements Colormap, Cloneable {
 			n = 255;
 		return map[n];
 	}
-	
+
 	/**
 	 * Set the color at "index" to "color". Entries are interpolated linearly from
 	 * the existing entries at "firstIndex" and "lastIndex" to the new entry.

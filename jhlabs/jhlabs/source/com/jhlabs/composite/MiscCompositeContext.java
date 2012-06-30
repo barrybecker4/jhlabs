@@ -51,17 +51,17 @@ public class MiscCompositeContext implements CompositeContext {
 
 	public void dispose() {
 	}
-	
+
 	// Multiply two numbers in the range 0..255 such that 255*255=255
 	static int multiply255( int a, int b ) {
 		int t = a * b + 0x80;
 		return ((t >> 8) + t) >> 8;
 	}
-	
+
 	static int clamp( int a ) {
 		return a < 0 ? 0 : a > 255 ? 255 : a;
 	}
-	
+
 	public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
 		float a=0, ac=0;
 		float alpha = this.alpha;
@@ -72,7 +72,7 @@ public class MiscCompositeContext implements CompositeContext {
 		case MiscComposite.HUE:
 		case MiscComposite.SATURATION:
 		case MiscComposite.VALUE:
-		case MiscComposite.COLOR: 
+		case MiscComposite.COLOR:
 			sHsv = new float[3];
 			diHsv = new float[3];
 			doHsv = new float[3];
@@ -226,7 +226,7 @@ public class MiscCompositeContext implements CompositeContext {
 						doHsv[1] = diHsv[1];
 						doHsv[2] = sHsv[2];
 						break;
-					case MiscComposite.COLOR: 
+					case MiscComposite.COLOR:
 						doHsv[0] = sHsv[0];
 						doHsv[1] = sHsv[1];
 						doHsv[2] = diHsv[2];
@@ -241,30 +241,30 @@ public class MiscCompositeContext implements CompositeContext {
 
 				case MiscComposite.BURN:
 					if (dir != 255)
-						dor = clamp(255-(((int)(255-sr) << 8) / (dir+1)));
+						dor = clamp(255-(((255-sr) << 8) / (dir+1)));
 					else
 						dor = sr;
 					if (dig != 255)
-						dog = clamp(255-(((int)(255-sg) << 8) / (dig+1)));
+						dog = clamp(255-(((255-sg) << 8) / (dig+1)));
 					else
 						dog = sg;
 					if (dib != 255)
-						dob = clamp(255-(((int)(255-sb) << 8) / (dib+1)));
+						dob = clamp(255-(((255-sb) << 8) / (dib+1)));
 					else
 						dob = sb;
 					break;
 
 				case MiscComposite.COLOR_BURN:
 					if (sr != 0)
-						dor = Math.max(255 - (((int)(255-dir) << 8) / sr), 0);
+						dor = Math.max(255 - (((255-dir) << 8) / sr), 0);
 					else
 						dor = sr;
 					if (sg != 0)
-						dog = Math.max(255 - (((int)(255-dig) << 8) / sg), 0);
+						dog = Math.max(255 - (((255-dig) << 8) / sg), 0);
 					else
 						dog = sg;
 					if (sb != 0)
-						dob = Math.max(255 - (((int)(255-dib) << 8) / sb), 0);
+						dob = Math.max(255 - (((255-dib) << 8) / sb), 0);
 					else
 						dob = sb;
 					break;

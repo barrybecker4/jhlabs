@@ -26,7 +26,7 @@ import com.jhlabs.math.*;
  * A filter which use FFTs to simulate lens blur on an image.
  */
 public class LensBlurFilter extends AbstractBufferedImageOp {
-    
+
     private float radius = 10;
 	private float bloom = 2;
 	private float bloomThreshold = 192;
@@ -41,7 +41,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
-	
+
 	/**
 	 * Get the radius of the kernel.
 	 * @return the radius
@@ -59,7 +59,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
 	public void setSides(int sides) {
 		this.sides = sides;
 	}
-	
+
 	/**
 	 * Get the number of sides of the aperture.
 	 * @return the number of sides
@@ -77,7 +77,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
 	public void setBloom(float bloom) {
 		this.bloom = bloom;
 	}
-	
+
 	/**
 	 * Get the bloom factor.
 	 * @return the bloom factor
@@ -95,7 +95,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
 	public void setBloomThreshold(float bloomThreshold) {
 		this.bloomThreshold = bloomThreshold;
 	}
-	
+
 	/**
 	 * Get the bloom threshold.
 	 * @return the bloom threshold
@@ -114,9 +114,6 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
         int iradius = (int)Math.ceil(radius);
         int tileWidth = 128;
         int tileHeight = tileWidth;
-
-        int adjustedWidth = (int)(width + iradius*2);
-        int adjustedHeight = (int)(height + iradius*2);
 
 		tileWidth = iradius < 32 ? Math.min(128, width+2*iradius) : Math.min(256, width+2*iradius);
 		tileHeight = iradius < 32 ? Math.min(128, height+2*iradius) : Math.min(256, height+2*iradius);
@@ -175,7 +172,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                 i++;
             }
         }
-		
+
         // Normalize the kernel
         i = 0;
         for ( int y = 0; y < h; y++ ) {
@@ -272,7 +269,7 @@ public class LensBlurFilter extends AbstractBufferedImageOp {
                         float imm = mask[1][i];
                         ar[0][i] = re*rem-im*imm;
                         ar[1][i] = re*imm+im*rem;
-                        
+
                         re = gb[0][i];
                         im = gb[1][i];
                         gb[0][i] = re*rem-im*imm;

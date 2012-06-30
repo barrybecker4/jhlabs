@@ -187,7 +187,7 @@ public class ImageMath {
 	 */
 	public static double mod(double a, double b) {
 		int n = (int)(a/b);
-		
+
 		a -= n*b;
 		if (a < 0)
 			return a + b;
@@ -202,7 +202,7 @@ public class ImageMath {
 	 */
 	public static float mod(float a, float b) {
 		int n = (int)(a/b);
-		
+
 		a -= n*b;
 		if (a < 0)
 			return a + b;
@@ -217,7 +217,7 @@ public class ImageMath {
 	 */
 	public static int mod(int a, int b) {
 		int n = a/b;
-		
+
 		a -= n*b;
 		if (a < 0)
 			return a + b;
@@ -244,7 +244,7 @@ public class ImageMath {
 	public static float lerp(float t, float a, float b) {
 		return a + t * (b - a);
 	}
-	
+
 	/**
 	 * Linear interpolation.
 	 * @param t the interpolation parameter
@@ -283,7 +283,10 @@ public class ImageMath {
 	 * Bilinear interpolation of ARGB values.
 	 * @param x the X interpolation parameter 0..1
 	 * @param y the y interpolation parameter 0..1
-	 * @param rgb array of four ARGB values in the order NW, NE, SW, SE
+	 * @param nw rgb array of four ARGB values in the order NW, NE, SW, SE
+     * @param ne rgb array of four ARGB values in the order NW, NE, SW, SE
+     * @param sw rgb array of four ARGB values in the order NW, NE, SW, SE
+     * @param se rgb array of four ARGB values in the order NW, NE, SW, SE
 	 * @return the interpolated value
 	 */
 	public static int bilinearInterpolate(float x, float y, int nw, int ne, int sw, int se) {
@@ -329,7 +332,7 @@ public class ImageMath {
 
 	/**
 	 * Return the NTSC gray level of an RGB value.
-	 * @param rgb1 the input pixel
+	 * @param rgb the input pixel
 	 * @return the gray level (0-255)
 	 */
 	public static int brightnessNTSC(int rgb) {
@@ -338,7 +341,7 @@ public class ImageMath {
 		int b = rgb & 0xff;
 		return (int)(r*0.299f + g*0.587f + b*0.114f);
 	}
-	
+
 	// Catmull-Rom splines
 	private final static float m00 = -0.5f;
 	private final static float m01 =  1.5f;
@@ -369,10 +372,10 @@ public class ImageMath {
 		int numSpans = numKnots - 3;
 		float k0, k1, k2, k3;
 		float c0, c1, c2, c3;
-		
+
 		if (numSpans < 1)
 			throw new IllegalArgumentException("Too few knots in spline");
-		
+
 		x = clamp(x, 0, 1) * numSpans;
 		span = (int)x;
 		if (span > numKnots-4)
@@ -383,15 +386,15 @@ public class ImageMath {
 		k1 = knots[span+1];
 		k2 = knots[span+2];
 		k3 = knots[span+3];
-		
+
 		c3 = m00*k0 + m01*k1 + m02*k2 + m03*k3;
 		c2 = m10*k0 + m11*k1 + m12*k2 + m13*k3;
 		c1 = m20*k0 + m21*k1 + m22*k2 + m23*k3;
 		c0 = m30*k0 + m31*k1 + m32*k2 + m33*k3;
-		
+
 		return ((c3*x + c2)*x + c1)*x + c0;
 	}
-	
+
 	/**
 	 * Compute a Catmull-Rom spline, but with variable knot spacing.
 	 * @param x the input parameter
@@ -405,16 +408,16 @@ public class ImageMath {
 		int numSpans = numKnots - 3;
 		float k0, k1, k2, k3;
 		float c0, c1, c2, c3;
-		
+
 		if (numSpans < 1)
 			throw new IllegalArgumentException("Too few knots in spline");
-		
+
 		for (span = 0; span < numSpans; span++)
 			if (xknots[span+1] > x)
 				break;
 		if (span > numKnots-3)
 			span = numKnots-3;
-		float t = (float)(x-xknots[span]) / (xknots[span+1]-xknots[span]);
+		float t = x-xknots[span] / (xknots[span+1]-xknots[span]);
 		span--;
 		if (span < 0) {
 			span = 0;
@@ -425,12 +428,12 @@ public class ImageMath {
 		k1 = yknots[span+1];
 		k2 = yknots[span+2];
 		k3 = yknots[span+3];
-		
+
 		c3 = m00*k0 + m01*k1 + m02*k2 + m03*k3;
 		c2 = m10*k0 + m11*k1 + m12*k2 + m13*k3;
 		c1 = m20*k0 + m21*k1 + m22*k2 + m23*k3;
 		c0 = m30*k0 + m31*k1 + m32*k2 + m33*k3;
-		
+
 		return ((c3*t + c2)*t + c1)*t + c0;
 	}
 
@@ -446,10 +449,10 @@ public class ImageMath {
 		int numSpans = numKnots - 3;
 		float k0, k1, k2, k3;
 		float c0, c1, c2, c3;
-		
+
 		if (numSpans < 1)
 			throw new IllegalArgumentException("Too few knots in spline");
-		
+
 		x = clamp(x, 0, 1) * numSpans;
 		span = (int)x;
 		if (span > numKnots-4)
@@ -459,12 +462,12 @@ public class ImageMath {
 		int v = 0;
 		for (int i = 0; i < 4; i++) {
 			int shift = i * 8;
-			
+
 			k0 = (knots[span] >> shift) & 0xff;
 			k1 = (knots[span+1] >> shift) & 0xff;
 			k2 = (knots[span+2] >> shift) & 0xff;
 			k3 = (knots[span+3] >> shift) & 0xff;
-			
+
 			c3 = m00*k0 + m01*k1 + m02*k2 + m03*k3;
 			c2 = m10*k0 + m11*k1 + m12*k2 + m13*k3;
 			c1 = m20*k0 + m21*k1 + m22*k2 + m23*k3;
@@ -476,7 +479,7 @@ public class ImageMath {
 				n = 255;
 			v |= n << shift;
 		}
-		
+
 		return v;
 	}
 
@@ -493,10 +496,10 @@ public class ImageMath {
 		int numSpans = numKnots - 3;
 		float k0, k1, k2, k3;
 		float c0, c1, c2, c3;
-		
+
 		if (numSpans < 1)
 			throw new IllegalArgumentException("Too few knots in spline");
-		
+
 		for (span = 0; span < numSpans; span++)
 			if (xknots[span+1] > x)
 				break;
@@ -512,12 +515,12 @@ public class ImageMath {
 		int v = 0;
 		for (int i = 0; i < 4; i++) {
 			int shift = i * 8;
-			
+
 			k0 = (yknots[span] >> shift) & 0xff;
 			k1 = (yknots[span+1] >> shift) & 0xff;
 			k2 = (yknots[span+2] >> shift) & 0xff;
 			k3 = (yknots[span+3] >> shift) & 0xff;
-			
+
 			c3 = m00*k0 + m01*k1 + m02*k2 + m03*k3;
 			c2 = m10*k0 + m11*k1 + m12*k2 + m13*k3;
 			c1 = m20*k0 + m21*k1 + m22*k2 + m23*k3;
@@ -529,7 +532,7 @@ public class ImageMath {
 				n = 255;
 			v |= n << shift;
 		}
-		
+
 		return v;
 	}
 
@@ -560,8 +563,7 @@ public class ImageMath {
 		for (j = 0; j < length; j++) {
 			while (out[i+1] < j)
 				i++;
-			in[j] = i + (float) (j - out[i]) / (out[i + 1] - out[i]);
-//			in[j] = ImageMath.clamp( in[j], 0, length-1 );
+			in[j] = i + (j - out[i]) / (out[i + 1] - out[i]);
 		}
 		in[length] = length;
 		in[length+1] = length;
@@ -612,7 +614,7 @@ public class ImageMath {
 				rSum += (rIntensity * outSegment);
 				gSum += (gIntensity * outSegment);
 				bSum += (bIntensity * outSegment);
-				dest[destIndex] = 
+				dest[destIndex] =
 					((int)Math.min(aSum/sizfac, 255) << 24) |
 					((int)Math.min(rSum/sizfac, 255) << 16) |
 					((int)Math.min(gSum/sizfac, 255) << 8) |

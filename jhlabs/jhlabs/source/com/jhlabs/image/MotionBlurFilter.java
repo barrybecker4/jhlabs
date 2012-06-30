@@ -51,7 +51,7 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
         this.rotation = rotation;
         this.zoom = zoom;
     }
-    
+
 	/**
      * Specifies the angle of blur.
      * @param angle the angle of blur.
@@ -70,7 +70,7 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
 	public float getAngle() {
 		return angle;
 	}
-	
+
 	/**
      * Set the distance of blur.
      * @param distance the distance of blur.
@@ -88,7 +88,7 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
 	public float getDistance() {
 		return distance;
 	}
-	
+
 	/**
      * Set the blur rotation.
      * @param rotation the angle of rotation.
@@ -106,7 +106,7 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
 	public float getRotation() {
 		return rotation;
 	}
-	
+
 	public void setZoom( float zoom ) {
 		this.zoom = zoom;
 	}
@@ -119,7 +119,7 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
 	public float getZoom() {
 		return zoom;
 	}
-	
+
 	/**
      * Set whether to wrap at the image edges.
      * @param wrapEdges true if it should wrap.
@@ -229,10 +229,10 @@ public class MotionBlurFilter extends AbstractBufferedImageOp {
 				if (count == 0) {
 					outPixels[index] = inPixels[index];
 				} else {
-					a = PixelUtils.clamp((int)(a/count));
-					r = PixelUtils.clamp((int)(r/count));
-					g = PixelUtils.clamp((int)(g/count));
-					b = PixelUtils.clamp((int)(b/count));
+					a = PixelUtils.clamp(a/count);
+					r = PixelUtils.clamp(r/count);
+					g = PixelUtils.clamp(g/count);
+					b = PixelUtils.clamp(b/count);
 					outPixels[index] = (a << 24) | (r << 16) | (g << 8) | b;
 				}
 				index++;

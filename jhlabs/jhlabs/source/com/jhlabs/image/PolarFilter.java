@@ -23,7 +23,7 @@ import java.awt.image.*;
  * A filter which distorts and image by performing coordinate conversions between rectangular and polar coordinates.
  */
 public class PolarFilter extends TransformFilter {
-	
+
     public enum PolarMappingType {
          RECT_TO_POLAR,  // Convert from rectangular to polar coordinates.
          POLAR_TO_RECT,  // Convert from polar to rectangular coordinates.
@@ -59,7 +59,7 @@ public class PolarFilter extends TransformFilter {
 		radius = Math.max(centreY, centreX);
 		return super.filter( src, dst );
 	}
-	
+
 	/**
      * Set the distortion type.
      * @param type the distortion type
@@ -68,7 +68,7 @@ public class PolarFilter extends TransformFilter {
 	public void setType(PolarMappingType type) {
 		this.type = type;
 	}
-    
+
     /**
      * Set the distortion type.
      * @param type the distortion type
@@ -86,9 +86,9 @@ public class PolarFilter extends TransformFilter {
 	public PolarMappingType getType() {
 		return type;
 	}
-    
+
      /**
-     * 
+     *
      * @param edgeAction
      */
     public void setEdgeAction(String edgeAction) {
@@ -103,7 +103,7 @@ public class PolarFilter extends TransformFilter {
 		float theta, t;
 		float m, xmax, ymax;
 		float r = 0;
-		
+
 		switch (type) {
 		case RECT_TO_POLAR:
 			theta = 0;
@@ -134,7 +134,7 @@ public class PolarFilter extends TransformFilter {
 				m = Math.abs ((y - centreY) / (x - centreX));
 			else
 				m = 0;
-			
+
 			if (m <= (height / width)) {
 				if (x == centreX) {
 					xmax = 0;
@@ -147,7 +147,7 @@ public class PolarFilter extends TransformFilter {
 				ymax = centreY;
 				xmax = ymax / m;
 			}
-			
+
 			out[0] = (width-1) - (width - 1)/ImageMath.TWO_PI * theta;
 			out[1] = height * r / radius;
 			break;
@@ -163,14 +163,14 @@ public class PolarFilter extends TransformFilter {
 				theta2 = ImageMath.PI - theta;
 			else
 				theta2 = theta;
-	
+
 			t = (float)Math.tan(theta2);
 			if (t != 0)
 				m = 1.0f / t;
 			else
 				m = 0;
-	
-			if (m <= ((float)(height) / (float)(width))) {
+
+			if (m <= (height / width)) {
 				if (theta2 == 0) {
 					xmax = 0;
 					ymax = centreY;
@@ -182,24 +182,24 @@ public class PolarFilter extends TransformFilter {
 				ymax = centreY;
 				xmax = ymax / m;
 			}
-	
-			r = radius * (float)(y / (float)(height));
+
+			r = radius * (y / height);
 
 			float nx = -r * (float)Math.sin(theta2);
 			float ny = r * (float)Math.cos(theta2);
-			
+
 			if (theta >= 1.5f * ImageMath.PI) {
-				out[0] = (float)centreX - nx;
-				out[1] = (float)centreY - ny;
+				out[0] = centreX - nx;
+				out[1] = centreY - ny;
 			} else if (theta >= Math.PI) {
-				out[0] = (float)centreX - nx;
-				out[1] = (float)centreY + ny;
+				out[0] = centreX - nx;
+				out[1] = centreY + ny;
 			} else if (theta >= 0.5 * Math.PI) {
-				out[0] = (float)centreX + nx;
-				out[1] = (float)centreY + ny;
+				out[0] = centreX + nx;
+				out[1] = centreY + ny;
 			} else {
-				out[0] = (float)centreX + nx;
-				out[1] = (float)centreY - ny;
+				out[0] = centreX + nx;
+				out[1] = centreY - ny;
 			}
 			break;
 		case INVERT_IN_CIRCLE:

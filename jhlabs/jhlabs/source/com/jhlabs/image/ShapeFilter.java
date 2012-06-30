@@ -120,7 +120,7 @@ public class ShapeFilter extends WholeImageFilter {
 		int ymax = height - 3;
 		int max = 0;
 		int v;
-		
+
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				int offset = x + y * width;
@@ -199,9 +199,9 @@ public class ShapeFilter extends WholeImageFilter {
 						sg = (c >> 8) & 0xFF;
 						sb = (c) & 0xFF;
 					}
-					
+
 					sa = useAlpha ? (pixels[offset] >> 24) & 0xff : PixelUtils.brightness(pixels[offset]);
-					
+
 					// invert v if necessary
 					if (invert) {
 						sr = 255-sr;
@@ -221,24 +221,24 @@ public class ShapeFilter extends WholeImageFilter {
 					int	g = (col & 0xFF00) >> 8;
 					int	b = (col & 0xFF);
 
-					r = (int)((sr*r/transp));
-					g = (int)((sg*g/transp));
-					b = (int)((sb*b/transp));
-				
+					r = sr*r/transp;
+					g = sg*g/transp;
+					b = sb*b/transp;
+
 					// clip colors
 					if (r < 0)
 						r = 0;
 					if (r > 255)
-						r = 255; 
+						r = 255;
 					if (g < 0)
 						g = 0;
 					if (g > 255)
-						g = 255; 
+						g = 255;
 					if (b < 0)
 						b = 0;
 					if (b > 255)
 						b = 255;
-					
+
 					pixels[offset] = (a << 24) | (r << 16) | (g << 8) | b;
 				} else {
 					// write gray shades
@@ -263,66 +263,66 @@ public class ShapeFilter extends WholeImageFilter {
 
 		v = map[r2 + 2] + one;
 		min = v;
-		
+
 		v = map[r3 + 1] + one;
 		if (v < min)
 			min = v;
-		
+
 		v = map[r3 + 3] + one;
 		if (v < min)
 			min = v;
-		
+
 		v = map[r4 + 2] + one;
 		if (v < min)
 			min = v;
-		
+
 		v = map[r2 + 1] + sqrt2;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r2 + 3] + sqrt2;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r4 + 1] + sqrt2;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r4 + 3] + sqrt2;
 		if (v < min)
 			min = v;
-		
+
 		if (y == 1 || x == 1 || y == ymax+1 || x == xmax+1)
 			return map[offset] = min;
 
 		v = map[r1 + 1] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r1 + 3] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r2 + 4] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r4 + 4] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r5 + 3] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r5 + 1] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r4] + sqrt5;
 		if (v < min)
 			min = v;
-			
+
 		v = map[r2] + sqrt5;
 		if (v < min)
 			min = v;
@@ -351,7 +351,7 @@ public class ShapeFilter extends WholeImageFilter {
 		v = map[r4 + 2] + one;
 		if (v < min)
 			min = v;
-		
+
 		v = map[r2 + 1] + sqrt2;
 		if (v < min)
 			min = v;
@@ -364,7 +364,7 @@ public class ShapeFilter extends WholeImageFilter {
 		v = map[r4 + 3] + sqrt2;
 		if (v < min)
 			min = v;
-		
+
 		v = map[r1 + 1] + sqrt5;
 		if (v < min)
 			min = v;
@@ -392,7 +392,7 @@ public class ShapeFilter extends WholeImageFilter {
 
 		return map[offset] = min;
 	}
-	
+
 	public String toString() {
 		return "Stylize/Shapeburst...";
 	}

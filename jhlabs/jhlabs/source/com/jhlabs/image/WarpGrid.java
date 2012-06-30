@@ -165,13 +165,13 @@ int j = 0;
 		int index = 0;
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				intermediate.xGrid[index] = (float)ImageMath.lerp(t, xGrid[index], destination.xGrid[index]);
-				intermediate.yGrid[index] = (float)ImageMath.lerp(t, yGrid[index], destination.yGrid[index]);
+				intermediate.xGrid[index] = ImageMath.lerp(t, xGrid[index], destination.xGrid[index]);
+				intermediate.yGrid[index] = ImageMath.lerp(t, yGrid[index], destination.yGrid[index]);
 				index++;
 			}
 		}
 	}
-	
+
 	public void warp(int[] inPixels, int cols, int rows, WarpGrid sourceGrid, WarpGrid destGrid, int[] outPixels) {
 try {
 		int x, y;
@@ -264,7 +264,7 @@ try {
 
 		for (x = 0; x < cols; x++) {
 			int i = x;
-			
+
 			for (v = 0; v < gridRows; v++) {
 				xrow[v] = splines.xGrid[i];;
 				yrow[v] = splines.yGrid[i];;
@@ -324,7 +324,7 @@ catch (Exception e) {
 			c2 = m10*k0 + m11*k1 + m12*k2 + m13*k3;
 			c1 = m20*k0 + m22*k2;
 			c0 = m31*k1;
-			
+
 			splineY[splineOffset+i] = ((c3*t + c2)*t + c1)*t + c0;
 		}
 	}
