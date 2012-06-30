@@ -73,10 +73,12 @@ public class ImageMath {
 			return 1.0f - (float)Math.pow(2 * (1. - a), p) / 2;
 */
 		float c = (1.0f/b-2.0f) * (1.0f-2.0f*a);
-		if (a < 0.5)
+		if (a < 0.5)   {
 			return a/(c+1.0f);
-		else
+        }
+		else  {
 			return (c-a)/(c-1.0f);
+        }
 	}
 
 	/**

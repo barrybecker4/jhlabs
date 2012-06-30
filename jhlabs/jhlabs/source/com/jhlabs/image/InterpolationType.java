@@ -7,12 +7,12 @@ package com.jhlabs.image;
 
 /**
  * Method of interpolation to use when processing.
- * 
+ *
  * @author Barry becker
  */
 public enum InterpolationType {
 
-    /** Use nearest-neighbout interpolation.   */
+    /** Use nearest-neighbour interpolation.   */
 	NEAREST_NEIGHBOUR,
 
     /** Use bilinear interpolation.  */
