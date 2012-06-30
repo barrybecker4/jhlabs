@@ -42,6 +42,10 @@ subprojects {
         }
     }
 
+    tasks.withType(Compile) {
+        options.compilerArgs << "-Xlint:cast,deprecation,divzero,empty,fallthrough,finally,overrides,path,unchecked"
+    }
+
     // all my projects use this directory layout.
     sourceSets {
       main {

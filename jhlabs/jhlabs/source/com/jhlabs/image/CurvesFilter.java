@@ -22,19 +22,19 @@ import java.awt.image.*;
 public class CurvesFilter extends TransferFilter {
 
 	private Curve[] curves = new Curve[1];
-	
+
     public static class Curve {
         private float[] x;
         private float[] y;
-        
+
         public Curve() {
             x = new float[] { 0, 1 };
             y = new float[] { 0, 1 };
         }
-        
+
         /**
          * xy, control points that define a spline curve.
-         * @param x 
+         * @param x
          * @param y
          */
         public Curve(float[] x, float[] y)
@@ -42,12 +42,12 @@ public class CurvesFilter extends TransferFilter {
             this.x = x;
             this.y = y;
         }
-        
+
         public Curve( Curve curve ) {
-            x = (float[])curve.x.clone();
-            y = (float[])curve.y.clone();
+            x = curve.x.clone();
+            y = curve.y.clone();
         }
-        
+
         public int addKnot( float kx, float ky ) {
             int pos = -1;
             int numKnots = x.length;
@@ -74,7 +74,7 @@ public class CurvesFilter extends TransferFilter {
             y = ny;
             return pos;
         }
-        
+
         public void removeKnot( int n ) {
             int numKnots = x.length;
             if ( numKnots <= 2 )
@@ -137,14 +137,14 @@ public class CurvesFilter extends TransferFilter {
             return table;
         }
     }
-    
+
     public CurvesFilter() {
         curves = new Curve[3];
         curves[0] = new Curve();
         curves[1] = new Curve();
         curves[2] = new Curve();
     }
-    
+
 	protected void initialize() {
 		initialized = true;
 		if ( curves.length == 1 )
@@ -160,14 +160,14 @@ public class CurvesFilter extends TransferFilter {
         curves = new Curve[] { curve };
 		initialized = false;
 	}
-	
+
 	public void setCurves( Curve[] curves ) {
 		if ( curves == null || (curves.length != 1 && curves.length != 3) )
             throw new IllegalArgumentException( "Curves must be length 1 or 3" );
         this.curves = curves;
 		initialized = false;
 	}
-	
+
 	public Curve[] getCurves() {
 		return curves;
 	}

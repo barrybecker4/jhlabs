@@ -27,7 +27,7 @@ import java.util.*;
  * A filter which produces lighting and embossing effects.
  */
 public class LightFilter extends WholeImageFilter {
-	
+
     public enum ColorType {
         FROM_IMAGE,  // Take the output colors from the input image.
         CONSTANT // Use constant material color.
@@ -38,7 +38,7 @@ public class LightFilter extends WholeImageFilter {
         FROM_MAP,               // Use a separate image alpha channel as the bump map.
         FROM_BEVEL           // Use a custom function as the bump map.
     };
-    
+
     public enum BumpShapeType {
         NONE,
         SMOOTH,
@@ -47,13 +47,13 @@ public class LightFilter extends WholeImageFilter {
         CIRCLE,
         GAIN
     }
-   
+
 	private float bumpHeight;
 	private float bumpSoftness;
 	private BumpShapeType bumpShape;
 	private float viewDistance = 10000.0f;
 	Material material;
-	private Vector lights;
+	private Vector<Light> lights;
 	private ColorType colorSource = ColorType.FROM_IMAGE;
 	private BumpType bumpSource = BumpType.FROM_IMAGE;
 	private Function2D bumpFunction;
@@ -71,7 +71,7 @@ public class LightFilter extends WholeImageFilter {
 	private Vector3f tmpv, tmpv2;
 
 	public LightFilter() {
-		lights = new Vector();
+		lights = new Vector<Light>();
 		addLight(new DistantLight());
 		bumpHeight = 1.0f;
 		bumpSoftness = 5.0f;
@@ -122,7 +122,7 @@ public class LightFilter extends WholeImageFilter {
 	public void setBumpShape(BumpShapeType bumpShape) {
 		this.bumpShape = bumpShape;
 	}
-    
+
     public void setBumpShape(String bumpShape) {
 		setBumpShape(BumpShapeType.valueOf(bumpShape));
 	}
@@ -162,7 +162,7 @@ public class LightFilter extends WholeImageFilter {
     public void setColorSource(String colorSource) {
         setColorSource(ColorType.valueOf(colorSource));
     }
-    
+
 	public ColorType getColorSource() {
 		return colorSource;
 	}
@@ -174,7 +174,7 @@ public class LightFilter extends WholeImageFilter {
     public void setBumpSource(String bumpSource) {
 		setBumpSource(BumpType.valueOf(bumpSource));
 	}
-    
+
 	public BumpType getBumpSource() {
 		return bumpSource;
 	}
@@ -190,21 +190,21 @@ public class LightFilter extends WholeImageFilter {
 	public void addLight(Light light) {
 		lights.addElement(light);
 	}
-	
+
 	public void removeLight(Light light) {
 		lights.removeElement(light);
 	}
-	
+
 	public Vector getLights() {
 		return lights;
 	}
-	
+
 	protected final static float r255 = 1.0f/255.0f;
 
 	protected void setFromRGB( Color4f c, int argb ) {
 		c.set( ((argb >> 16) & 0xff) * r255, ((argb >> 8) & 0xff) * r255, (argb & 0xff) * r255, ((argb >> 24) & 0xff) * r255 );
 	}
-	
+
 	protected int[] filterPixels( int width, int height, int[] inPixels, Rectangle transformedSpace ) {
 		int index = 0;
 		int[] outPixels = new int[width * height];
@@ -242,7 +242,7 @@ public class LightFilter extends WholeImageFilter {
 				GaussianFilter.convolveAndTranspose( kernel, bumpPixels, tmpPixels, bumpWidth, bumpHeight, true, false, false, GaussianFilter.WRAP_EDGES );
 				GaussianFilter.convolveAndTranspose( kernel, tmpPixels, softPixels, bumpHeight, bumpWidth, true, false, false, GaussianFilter.WRAP_EDGES );
 				bump = new ImageFunction2D(softPixels, bumpWidth, bumpHeight, ImageFunction2D.CLAMP, bumpSource ==BumpType.FROM_IMAGE_ALPHA);
-                
+
                 final Function2D bbump = bump;
                 if ( bumpShape != BumpShapeType.NONE ) {
                     bump = createBumpFunction(bbump);
@@ -275,7 +275,7 @@ public class LightFilter extends WholeImageFilter {
 			for (int x = 0; x < width; x++) {
 				boolean x0 = x > 0;
 				boolean x1 = x < width-1;
-				
+
 				// Calculate the normal at this point
 				if (bumpSource != BumpType.FROM_BEVEL) {
 					// Complicated and slower method
@@ -360,7 +360,7 @@ public class LightFilter extends WholeImageFilter {
 						// Reflect
 						tmpv.scale( 2.0f*tmpv.dot(tmpv2) );
 						tmpv.sub(v);
-						
+
 						tmpv.normalize();
 						setFromRGB(envColor, getEnvironmentMap(tmpv, inPixels, width, height));//FIXME-interpolate()
 						diffuseColor.x = reflectivity*envColor.x + areflectivity*diffuseColor.x;
@@ -382,7 +382,7 @@ public class LightFilter extends WholeImageFilter {
 		}
 		return outPixels;
 	}
-    
+
     private Function2D createBumpFunction(final Function2D bbump) {
         return new Function2D() {
             private Function2D original = bbump;
@@ -410,7 +410,7 @@ public class LightFilter extends WholeImageFilter {
             }
         };
     }
-            
+
 	protected Color4f phongShade(Vector3f position, Vector3f viewpoint, Vector3f normal, Color4f diffuseColor, Color4f specularColor, Material material, Light[] lightsArray) {
 		shadedColor.set(diffuseColor);
 		shadedColor.scale(material.ambientIntensity);
@@ -425,7 +425,7 @@ public class LightFilter extends WholeImageFilter {
 			float nDotL = n.dot(l);
 			if (nDotL >= 0.0) {
 				float dDotL = 0;
-				
+
 				v.set(viewpoint);
 				v.sub(position);
 				v.normalize();
@@ -459,7 +459,7 @@ public class LightFilter extends WholeImageFilter {
 					rv *= e;
 					nDotL *= e;
 				}
-				
+
 				diffuse_color.set(diffuseColor);
 				diffuse_color.scale(material.diffuseReflectivity);
 				diffuse_color.x *= light.realColor.x * nDotL;
@@ -493,7 +493,7 @@ public class LightFilter extends WholeImageFilter {
 
 				if (f > 1.0f)
 					f = 1.0f;
-				else if (f < -1.0f) 
+				else if (f < -1.0f)
 					f = -1.0f;
 
 				x = (float)Math.acos(f)/ImageMath.PI;
@@ -513,7 +513,7 @@ public class LightFilter extends WholeImageFilter {
 		}
 		return 0;
 	}
-	
+
 	public String toString() {
 		return "Stylize/Light Effects...";
 	}
@@ -586,13 +586,13 @@ public class LightFilter extends WholeImageFilter {
 		public Light() {
 			this(270*ImageMath.PI/180.0f, 0.5235987755982988f, 1.0f);
 		}
-		
+
 		public Light(float azimuth, float elevation, float intensity) {
 			this.azimuth = azimuth;
 			this.elevation = elevation;
 			this.intensity = intensity;
 		}
-		
+
 		public void setAzimuth(float azimuth) {
 			this.azimuth = azimuth;
 		}
@@ -657,7 +657,7 @@ public class LightFilter extends WholeImageFilter {
 		public void setCentreX(float x) {
 			centreX = x;
 		}
-		
+
         /**
          * Get the centre of the light in the X direction as a proportion of the image size.
          * @return the center
@@ -675,7 +675,7 @@ public class LightFilter extends WholeImageFilter {
 		public void setCentreY(float y) {
 			centreY = y;
 		}
-		
+
         /**
          * Get the centre of the light in the Y direction as a proportion of the image size.
          * @return the center
@@ -708,7 +708,7 @@ public class LightFilter extends WholeImageFilter {
 			realColor.scale(intensity);
 			cosConeAngle = (float)Math.cos(coneAngle);
 		}
-		
+
 		public Object clone() {
 			try {
 				Light copy = (Light)super.clone();

@@ -20,8 +20,8 @@ import java.util.*;
 import java.io.*;
 
 /**
- * An image Quantizer based on the Octree algorithm. This is a very basic implementation
- * at present and could be much improved by picking the nodes to reduce more carefully 
+ * An image Quantizer based on the Octtree algorithm. This is a very basic implementation
+ * at present and could be much improved by picking the nodes to reduce more carefully
  * (i.e. not completely at random) when I get the time.
  */
 public class OctTreeQuantizer implements Quantizer {
@@ -45,7 +45,7 @@ public class OctTreeQuantizer implements Quantizer {
 		int	totalGreen;
 		int	totalBlue;
 		int index;
-		
+
 		/**
 		 * A debugging method which prints the tree out.
 		 */
@@ -55,25 +55,28 @@ public class OctTreeQuantizer implements Quantizer {
 			if (count == 0)
 				System.out.println(index+": count="+count);
 			else
-				System.out.println(index+": count="+count+" red="+(totalRed/count)+" green="+(totalGreen/count)+" blue="+(totalBlue/count));
+				System.out.println(
+                        index+": count="+count+" red="
+                                +(totalRed/count)+" green="
+                                +(totalGreen/count)+" blue="+(totalBlue/count));
 			for (int i = 0; i < 8; i++)
 				if (leaf[i] != null)
 					leaf[i].list(s, level+2);
 		}
 	}
 
-	private int nodes = 0;
+	private int nodes;
 	private OctTreeNode root;
 	private int reduceColors;
 	private int maximumColors;
 	private int colors = 0;
-	private Vector[] colorList;
-	
+	private Vector colorList[];
+
 	public OctTreeQuantizer() {
 		setup(256);
 		colorList = new Vector[MAX_LEVEL+1];
 		for (int i = 0; i < MAX_LEVEL+1; i++)
-			colorList[i] = new Vector();
+			colorList[i] = new Vector<OctTreeNode>();
 		root = new OctTreeNode();
 	}
 
@@ -85,7 +88,7 @@ public class OctTreeQuantizer implements Quantizer {
 		maximumColors = numColors;
 		reduceColors = Math.max(512, numColors * 2);
 	}
-	
+
 	/**
 	 * Add pixels to the quantizer.
 	 * @param pixels the array of ARGB pixels
@@ -98,7 +101,7 @@ public class OctTreeQuantizer implements Quantizer {
 			if (colors > reduceColors)
 				reduceTree(reduceColors);
 		}
-	}	
+	}
 
     /**
      * Get the color table index for a color.
@@ -237,7 +240,7 @@ public class OctTreeQuantizer implements Quantizer {
 		buildColorTable(root, table, 0);
 		return table;
 	}
-	
+
 	/**
 	 * A quick way to use the quantizer. Just create a table the right size and pass in the pixels.
      * @param inPixels the input colors
@@ -277,6 +280,6 @@ public class OctTreeQuantizer implements Quantizer {
 		}
 		return index;
 	}
-	
+
 }
 
