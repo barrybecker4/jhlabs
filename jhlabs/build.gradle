@@ -23,7 +23,10 @@ subprojects {
 
     // Repositories where we pull third-party libraries out of the cloud
     repositories {
-        mavenRepo url: 'http://repository.jboss.org/maven2/'
+        maven {
+            url "http://repo1.maven.org/maven2/"
+            //url "http://repository.jboss.org/maven2/"
+        }
         mavenCentral()
     }
 
@@ -65,6 +68,9 @@ subprojects {
           }
       }
     }
+
+    jar.baseName = 'jhlabs'
+    version = '1.0.2'
     //group = 'org.gradle'
     //version = '1.0'
     //manifest.mainAttributes(provider: 'gradle')
