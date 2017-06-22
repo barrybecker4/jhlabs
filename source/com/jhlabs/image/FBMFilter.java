@@ -36,7 +36,7 @@ public class FBMFilter extends PointFilter implements Cloneable {
 	private float lacunarity = 2.0f;
 	private float gain = 0.5f;
 	private float bias = 0.5f;
-	private OperationType operation;
+	private OperationType operation = OperationType.ADD;
 	private float m00 = 1.0f;
 	private float m01 = 0.0f;
 	private float m10 = 0.0f;
@@ -76,6 +76,10 @@ public class FBMFilter extends PointFilter implements Cloneable {
     public void setOperation(String operation) {
         setOperation(OperationType.valueOf(operation));
     }
+
+	public void setOperation(int operation) {
+		setOperation(OperationType.values()[operation]);
+	}
 
 	public void setOperation(OperationType operation) {
 		this.operation = operation;

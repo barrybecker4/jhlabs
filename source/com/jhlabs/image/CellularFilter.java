@@ -218,6 +218,10 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 		this.gridType = GridType.valueOf(gridType);
 	}
 
+	public void setGridType(int gridType) {
+		this.gridType = GridType.values()[gridType];
+	}
+
 	public void setGridType(GridType gridType) {
 		this.gridType = gridType;
 	}
